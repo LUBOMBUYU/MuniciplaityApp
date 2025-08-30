@@ -1,0 +1,14 @@
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\bin\Debug\net8.0-windows\MunicipalityApp.exe
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\bin\Debug\net8.0-windows\MunicipalityApp.deps.json
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\bin\Debug\net8.0-windows\MunicipalityApp.runtimeconfig.json
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\bin\Debug\net8.0-windows\MunicipalityApp.dll
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\bin\Debug\net8.0-windows\MunicipalityApp.pdb
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\obj\Debug\net8.0-windows\MunicipalityApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\obj\Debug\net8.0-windows\MunicipalityApp.AssemblyInfoInputs.cache
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\obj\Debug\net8.0-windows\MunicipalityApp.AssemblyInfo.cs
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\obj\Debug\net8.0-windows\MunicipalityApp.csproj.CoreCompileInputs.cache
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\obj\Debug\net8.0-windows\MunicipalityApp.dll
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\obj\Debug\net8.0-windows\refint\MunicipalityApp.dll
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\obj\Debug\net8.0-windows\MunicipalityApp.pdb
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\obj\Debug\net8.0-windows\MunicipalityApp.genruntimeconfig.cache
+C:\Users\lab_services_student\Desktop\MunicipalityApp\MunicipalityApp\obj\Debug\net8.0-windows\ref\MunicipalityApp.dll
