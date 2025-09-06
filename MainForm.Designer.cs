@@ -116,12 +116,21 @@ partial class MainForm : System.Windows.Forms.Form
         this.btnExit.Name = "btnExit";
         this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
 
+        // Logo PictureBox
+        this.pbLogo = new System.Windows.Forms.PictureBox();
+        this.pbLogo.Size = new System.Drawing.Size(100, 50);
+        this.pbLogo.Location = new System.Drawing.Point(10, 340);
+        this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+        this.pbLogo.BackColor = primaryBlue;
+        this.pbLogo.Name = "pbLogo";
+
         // Add controls to form
         this.Controls.Add(this.lblTitle);
         this.Controls.Add(this.btnReportIssue);
         this.Controls.Add(this.btnViewIssues);
         this.Controls.Add(this.btnServiceStatus);
         this.Controls.Add(this.btnExit);
+        this.Controls.Add(this.pbLogo);
         this.ResumeLayout(false);
         this.PerformLayout();
     }
@@ -133,4 +142,5 @@ partial class MainForm : System.Windows.Forms.Form
     private System.Windows.Forms.Button btnViewIssues;
     private System.Windows.Forms.Button btnServiceStatus;
     private System.Windows.Forms.Button btnExit;
+    private System.Windows.Forms.PictureBox pbLogo;
 }

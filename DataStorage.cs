@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
+using Microsoft.Data.Sqlite;
 using System.Linq;
 
 namespace MunicipalityApp
 {
     public static class IssueDataStorage
     {
-        private static readonly string _filePath;
-        private static Dictionary<Guid, Issue> _issues;
+        private static readonly string _dbPath;
         private static readonly Random _random = new Random();
 
         static IssueDataStorage()
@@ -17,70 +16,104 @@ namespace MunicipalityApp
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string appFolder = Path.Combine(appDataPath, "MunicipalityApp");
             Directory.CreateDirectory(appFolder); // Ensure the directory exists
-            _filePath = Path.Combine(appFolder, "issues.json");
+            _dbPath = Path.Combine(appFolder, "issues.db");
 
-            LoadIssues();
+            InitializeDatabase();
         }
 
-        private static void LoadIssues()
+        private static void InitializeDatabase()
         {
-            if (File.Exists(_filePath))
+            using (var connection = new SqliteConnection($"Data Source={_dbPath}"))
             {
-                string json = File.ReadAllText(_filePath);
-                // If the file is empty or just whitespace, start with a new list.
-                if (string.IsNullOrWhiteSpace(json))
-                {
-                    _issues = new Dictionary<Guid, Issue>();
-                    return;
-                }
-
-                try
-                {
-                    _issues = JsonSerializer.Deserialize<Dictionary<Guid, Issue>>(json) ?? new Dictionary<Guid, Issue>();
-                }
-                catch (JsonException)
-                {
-                    // The file is corrupted or not valid JSON. Start with a fresh list.
-                    // In a real-world app, you might backup the corrupted file and notify the user.
-                    _issues = new Dictionary<Guid, Issue>();
-                }
-            }
-            else
-            {
-                _issues = new Dictionary<Guid, Issue>();
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = @"
+                    CREATE TABLE IF NOT EXISTS Issues (
+                        Id TEXT PRIMARY KEY,
+                        Location TEXT NOT NULL,
+                        Category TEXT NOT NULL,
+                        Description TEXT NOT NULL,
+                        FilePath TEXT,
+                        SubmittedAt TEXT NOT NULL,
+                        ReportNumber TEXT NOT NULL UNIQUE
+                    );
+                ";
+                command.ExecuteNonQuery();
             }
         }
 
-        private static void SaveIssues()
-        {
-            string json = JsonSerializer.Serialize(_issues, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(_filePath, json);
-        }
-
-        private static string GenerateUniqueReportNumber()
+        private static string GenerateUniqueReportNumber(SqliteConnection connection)
         {
             string reportNumber;
             do
             {
                 int number = _random.Next(100000, 999999);
                 reportNumber = $"MUN-{number}";
-            } while (_issues.Values.Any(issue => issue.ReportNumber == reportNumber));
+            } while (IsReportNumberExists(connection, reportNumber));
             return reportNumber;
+        }
+
+        private static bool IsReportNumberExists(SqliteConnection connection, string reportNumber)
+        {
+            var command = connection.CreateCommand();
+            command.CommandText = "SELECT COUNT(*) FROM Issues WHERE ReportNumber = @reportNumber";
+            command.Parameters.AddWithValue("@reportNumber", reportNumber);
+            var result = command.ExecuteScalar();
+            long count = result != null ? (long)result : 0;
+            return count > 0;
         }
 
         public static string AddIssue(string location, string category, string description, string filePath)
         {
             Guid id = Guid.NewGuid();
-            var newIssue = new Issue(location, category, description, filePath);
-            newIssue.ReportNumber = GenerateUniqueReportNumber();
-            _issues[id] = newIssue;
-            SaveIssues();
-            return newIssue.ReportNumber;
+            string reportNumber;
+            using (var connection = new SqliteConnection($"Data Source={_dbPath}"))
+            {
+                connection.Open();
+                reportNumber = GenerateUniqueReportNumber(connection);
+                var command = connection.CreateCommand();
+                command.CommandText = @"
+                    INSERT INTO Issues (Id, Location, Category, Description, FilePath, SubmittedAt, ReportNumber)
+                    VALUES (@id, @location, @category, @description, @filePath, @submittedAt, @reportNumber);
+                ";
+                command.Parameters.AddWithValue("@id", id.ToString());
+                command.Parameters.AddWithValue("@location", location);
+                command.Parameters.AddWithValue("@category", category);
+                command.Parameters.AddWithValue("@description", description);
+                command.Parameters.AddWithValue("@filePath", filePath ?? "");
+                command.Parameters.AddWithValue("@submittedAt", DateTime.UtcNow.ToString("O"));
+                command.Parameters.AddWithValue("@reportNumber", reportNumber);
+                command.ExecuteNonQuery();
+            }
+            return reportNumber;
         }
 
         public static IEnumerable<Issue> GetIssues()
         {
-            return _issues.Values;
+            var issues = new List<Issue>();
+            using (var connection = new SqliteConnection($"Data Source={_dbPath}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT Id, Location, Category, Description, FilePath, SubmittedAt, ReportNumber FROM Issues";
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var issue = new Issue
+                        {
+                            Location = reader.GetString(1),
+                            Category = reader.GetString(2),
+                            Description = reader.GetString(3),
+                            FilePath = reader.GetString(4),
+                            SubmittedAt = DateTime.Parse(reader.GetString(5)),
+                            ReportNumber = reader.GetString(6)
+                        };
+                        issues.Add(issue);
+                    }
+                }
+            }
+            return issues;
         }
     }
 
@@ -91,7 +124,7 @@ namespace MunicipalityApp
         public string Description { get; set; }
         public string FilePath { get; set; }
         public DateTime SubmittedAt { get; set; }
-        public string ReportNumber { get; set; }
+        public string ReportNumber { get; set; } = string.Empty;
 
         /// <summary>
         /// Parameterless constructor required for JSON deserialization.
@@ -103,7 +136,6 @@ namespace MunicipalityApp
             Category = string.Empty;
             Description = string.Empty;
             FilePath = string.Empty;
-            ReportNumber = string.Empty;
         }
         
         public Issue(string location, string category, string description, string filePath)

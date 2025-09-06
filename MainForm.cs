@@ -8,6 +8,25 @@ namespace MunicipalityApp
         public MainForm()
         {
             InitializeComponent();
+            InitializeLogo();
+        }
+
+        private void InitializeLogo()
+        {
+            try
+            {
+                var logoPath = System.IO.Path.Combine(Application.StartupPath, "assests", "muncipality app.png");
+                if (System.IO.File.Exists(logoPath))
+                {
+                    var logoImage = System.Drawing.Image.FromFile(logoPath);
+                    this.Icon = System.Drawing.Icon.FromHandle(((System.Drawing.Bitmap)logoImage).GetHicon());
+                    this.pbLogo.Image = logoImage;
+                }
+            }
+            catch (Exception)
+            {
+                // Log or handle error if needed
+            }
         }
 
         private void btnReportIssue_Click(object? sender, EventArgs e)
