@@ -55,18 +55,18 @@ partial class MainForm : System.Windows.Forms.Form
         this.Name = "MainForm";
 
         // Title Label
-        this.lblTitle.Text = "Welcome";
+        this.lblTitle.Text = "Services Portal";
         this.lblTitle.Font = titleFont;
         this.lblTitle.ForeColor = accentGold;
         this.lblTitle.AutoSize = true;
-        this.lblTitle.Location = new System.Drawing.Point(220, 40);
         this.lblTitle.Name = "lblTitle";
+        this.lblTitle.Location = new System.Drawing.Point(200, 97);
 
         // Report Issue Button
         this.btnReportIssue.Text = "Report a New Issue";
         this.btnReportIssue.Font = buttonFont;
         this.btnReportIssue.Size = new System.Drawing.Size(250, 60);
-        this.btnReportIssue.Location = new System.Drawing.Point(175, 110);
+        this.btnReportIssue.Location = new System.Drawing.Point(175, 140);
         this.btnReportIssue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
         this.btnReportIssue.BackColor = accentGold;
         this.btnReportIssue.ForeColor = primaryBlue;
@@ -78,21 +78,20 @@ partial class MainForm : System.Windows.Forms.Form
         this.btnViewIssues.Text = "View Submitted Issues";
         this.btnViewIssues.Font = buttonFont;
         this.btnViewIssues.Size = new System.Drawing.Size(250, 60);
-        this.btnViewIssues.Location = new System.Drawing.Point(175, 180);
+        this.btnViewIssues.Location = new System.Drawing.Point(175, 210);
         this.btnViewIssues.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
         this.btnViewIssues.BackColor = accentGold;
         this.btnViewIssues.ForeColor = primaryBlue;
         this.btnViewIssues.FlatAppearance.BorderColor = accentGold;
         this.btnViewIssues.FlatAppearance.BorderSize = 1;
         this.btnViewIssues.Name = "btnViewIssues";
-        this.btnViewIssues.Enabled = false; // Feature not yet implemented
-                                            // this.btnViewIssues.Click += new System.EventHandler(this.btnViewIssues_Click);
+        this.btnViewIssues.Click += new System.EventHandler(this.btnViewIssues_Click);
 
         // Service Status Button
         this.btnServiceStatus.Text = "Service Status";
         this.btnServiceStatus.Font = buttonFont;
         this.btnServiceStatus.Size = new System.Drawing.Size(250, 60);
-        this.btnServiceStatus.Location = new System.Drawing.Point(175, 250);
+        this.btnServiceStatus.Location = new System.Drawing.Point(175, 280);
         this.btnServiceStatus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
         this.btnServiceStatus.BackColor = accentGold;
         this.btnServiceStatus.ForeColor = primaryBlue;
@@ -100,14 +99,13 @@ partial class MainForm : System.Windows.Forms.Form
         this.btnServiceStatus.FlatAppearance.BorderColor = accentGold;
         this.btnServiceStatus.FlatAppearance.BorderSize = 1;
         this.btnServiceStatus.Name = "btnServiceStatus";
-        this.btnServiceStatus.Enabled = false; // Feature not yet implemented
-                                            // this.btnServiceStatus.Click += new System.EventHandler(this.btnServiceStatus_Click);
+        this.btnServiceStatus.Click += new System.EventHandler(this.btnServiceStatus_Click);
 
         // Exit Button
         this.btnExit.Text = "Exit";
         this.btnExit.Font = buttonFont;
         this.btnExit.Size = new System.Drawing.Size(250, 60);
-        this.btnExit.Location = new System.Drawing.Point(175, 320);
+        this.btnExit.Location = new System.Drawing.Point(175, 350);
         this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
         this.btnExit.BackColor = controlBackColor;
         this.btnExit.ForeColor = lightTextColor;
@@ -118,11 +116,11 @@ partial class MainForm : System.Windows.Forms.Form
 
         // Logo PictureBox
         this.pbLogo = new System.Windows.Forms.PictureBox();
-        this.pbLogo.Size = new System.Drawing.Size(100, 50);
-        this.pbLogo.Location = new System.Drawing.Point(10, 340);
-        this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-        this.pbLogo.BackColor = primaryBlue;
+        ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
+        this.pbLogo.Location = new System.Drawing.Point(225, 12);
         this.pbLogo.Name = "pbLogo";
+        this.pbLogo.Size = new System.Drawing.Size(150, 75);
+        this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 
         // Add controls to form
         this.Controls.Add(this.lblTitle);
@@ -131,6 +129,7 @@ partial class MainForm : System.Windows.Forms.Form
         this.Controls.Add(this.btnServiceStatus);
         this.Controls.Add(this.btnExit);
         this.Controls.Add(this.pbLogo);
+        ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
         this.ResumeLayout(false);
         this.PerformLayout();
     }

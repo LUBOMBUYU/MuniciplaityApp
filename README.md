@@ -38,7 +38,7 @@ A comprehensive Windows Forms application developed over 4 years for efficient m
 ## Screenshots
 
 ### Main Application Window
-![Municipality App Main Window](assests/muncipality%20app.png)
+![Municipality App Main Window](assets/muncipality%20app.png)
 
 *The main interface showing the issue reporting form with category selection and input fields.*
 
@@ -190,5 +190,3 @@ For support and questions:
 - Email: support@municipalityapp.com
 
 ---
-
-
